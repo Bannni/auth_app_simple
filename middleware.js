@@ -27,11 +27,11 @@ export async function middleware(req) {
 
   // 4️⃣ SUDAH LOGIN TAPI SALAH ROLE → FORBIDDEN
   if (token) {
-    if (pathname.startsWith("/dashboard/admin") && token.role !== "admin") {
+    if (pathname.startsWith("/dashboard/admin") && token.role !== "admin" && token.role !== "ADMIN") {
       return new NextResponse("Forbidden", { status: 403 });
     }
 
-    if (pathname.startsWith("/dashboard/user") && token.role !== "user") {
+    if (pathname.startsWith("/dashboard/user") && token.role !== "user" && token.role !== "USER") {
       return new NextResponse("Forbidden", { status: 403 });
     }
   }

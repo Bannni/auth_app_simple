@@ -12,7 +12,7 @@ export async function getServerSideProps(ctx) {
     };
   }
 
-  if (session.user.role === "admin") {
+  if (session.user.role === "admin" || session.user.role === "ADMIN") {
     return {
       redirect: {
         destination: "/dashboard/admin",

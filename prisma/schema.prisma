@@ -25,6 +25,7 @@ model User {
   image         String? 
   accounts      Account[] 
   sessions      Session[] 
+  cart          Cart?
 } 
  
 model Account { 
@@ -50,3 +51,35 @@ model Session {
   userId       String 
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 } 
+
+model Product{
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Int
+  stock       Int      @default(0)
+  image       String?
+  createdAt   DateTime @default(now())
+  cartItems   CartItem[]
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  
+  @@unique([cartId, productId])
+}
